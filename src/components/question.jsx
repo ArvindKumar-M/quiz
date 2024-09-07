@@ -1,54 +1,65 @@
-import React, {useState, useEffect } from "react";
-import "./question.css";
+import React, { useState, useEffect } from "react";
 import { getQuestion, postAnswer } from "../service/api";
 import Result from "./result";
-
+import "./question.css"; 
 
 const Question = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [questionData, setQuestionData] = useState(null);
-  const [currentQuestionId, setCurrentQuestionId] = useState(1)
-  const [quizCompleted, setQuizCompleted] = useState(false)
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [currentQuestionId, setCurrentQuestionId] = useState(1);
+  const [timer, setTimer] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const fetchQuestionById = async (id) => {
+    try {
+      const res = await getQuestion(id);
+      setQuestionData(res);
+    } catch (error) {
+      console.error("Error fetching quiz data:", error);
+    }
+  };
+
+  const handleOptionChange = (e) => {
+    const selectedId = parseInt(e.target.value);
+    setSelectedOptions((prev) =>
+      e.target.checked
+        ? [...prev, selectedId]
+        : prev.filter((id) => id !== selectedId)
+    );
+  };
+
+  const nextQuestion = () => {
+    if (selectedOptions.length === 0) {
+      alert("You must select atleast one option");
+      return;
+    }
+    submitAnswer()
+      .then(() => {
+        if (currentQuestionId < 10) {
+          const nextQuestionId = currentQuestionId + 1;
+          setCurrentQuestionId(nextQuestionId);
+          setSelectedOptions([]);
+        } else {
+          setQuizCompleted(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const submitAnswer = async () => {
+    await postAnswer(currentQuestionId, {
+      selected_choice_ids: selectedOptions,
+      time_taken: 1,
+      user_id: 1,
+    });
+  };
+
+  useEffect(() => {
+    fetchQuestionById(currentQuestionId);
+  }, [currentQuestionId]);
 
   
-  const fetchQuestionById = async(id)=>{
-    try {
-      const res =  await getQuestion(id)
-      setQuestionData(res)
-    } catch (error) {
-      console.error("Error fetching quiz data:", error)
-    }
-  }
-
- const submitAnswer = async(id)=>{
-  const res = await postAnswer(id,{
-    selected_choice_ids: selectedOptions,
-        // time_taken: timer,
-  })
-  return res
-}
-
-const nextQuestion = async()=>{
-  // await submitAnswer(selectedOptions)
-  if(currentQuestionId<10){
-    const nextQuestionId = currentQuestionId + 1;
-    setCurrentQuestionId(nextQuestionId) 
-  }else{
-    setQuizCompleted(true)
-  }
-}
-const handleOptionChange = (event) => {
-  setSelectedOptions(event.target.value);
-};
-
-useEffect(()=>{
-  fetchQuestionById(currentQuestionId)
-},[currentQuestionId])
-
-if(quizCompleted){
-  return <Result/>
-}
-
   return (
     <div className="quiz-container">
       <div className="progress-container">
@@ -63,14 +74,21 @@ if(quizCompleted){
           <label key={choice_id} className="option-label">
             <input
               type="checkbox"
-              name="option"
               value={choice_id}
+              onChange={(e) => handleOptionChange(e)}
             />
-            {choice_text}
+            <span
+              className={`custom-radio ${
+                selectedOptions.includes(choice_id) ? "selected" : ""
+              }`}
+            ></span>
+            <span>{choice_text}</span>
           </label>
         ))}
       </div>
-      <button className="next-button" onClick={nextQuestion}>Next</button>
+      <button className="next-button" onClick={nextQuestion}>
+        Next
+      </button>
     </div>
   );
 };
