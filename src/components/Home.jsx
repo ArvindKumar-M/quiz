@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { takeRetest } from "../service/api";
 import "./home.css";
 
 const Home = () => {
   const navigate = useNavigate()
 
-  const startQuiz = () => {
+  const startQuiz = async() => {
+    await takeRetest()
     navigate("/question")
   };
 

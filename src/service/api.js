@@ -1,5 +1,5 @@
 export async function getQuestion(id) {
-  const data = await fetch(`http://localhost:8000/api/question/${id}`, {
+  const data = await fetch(`https://aravind-task-lqtx62jcj-manojs-projects-f5e911e8.vercel.app/api/question/${id}`, {
     headers: {
       "Content-type": "application/json",
     },
@@ -12,7 +12,7 @@ export async function getQuestion(id) {
 export async function postAnswer(currentQuestionId, answers) {
   try {
     const data = await fetch(
-      `http://localhost:8000/api/question/${currentQuestionId}/answer`,
+      `https://aravind-task-lqtx62jcj-manojs-projects-f5e911e8.vercel.app/api/question/${currentQuestionId}/answer`,
       {
         method: "POST",
         headers: {
@@ -29,7 +29,7 @@ export async function postAnswer(currentQuestionId, answers) {
 }
 
 export async function getResult(userId) {
-  const data = await fetch("http://localhost:8000/api/score", {
+  const data = await fetch("https://aravind-task-lqtx62jcj-manojs-projects-f5e911e8.vercel.app/api/score", {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -40,7 +40,7 @@ export async function getResult(userId) {
 }
 
 export async function takeRetest() {
-  const data = await fetch("http://localhost:8000/api/retest", {
+  const data = await fetch("https://aravind-task-lqtx62jcj-manojs-projects-f5e911e8.vercel.app/api/retest", {
     method: "POST",
     headers: {
       "Content-type": "application/json",

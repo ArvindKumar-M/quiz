@@ -100,7 +100,7 @@ const Question = () => {
           onClose={closeAlert}
         />
       )}
-      <div class="question-gauge-container">
+      <div className="question-gauge-container">
         <QuestionGauge questionNumber={currentQuestionId} totalQuestions={10} />
       </div>
       <div className="timer">
@@ -108,7 +108,7 @@ const Question = () => {
       </div>
       <p className="quiz-question">{questionData?.question}</p>
       {questionData?.is_image===1&&<div className="q-image">
-         <img src={questionData?.image_path} alt="" srcset="" />
+         <img src={questionData?.image_path} alt="question-image"/>
       </div>}
       <div className="options-container">
         {questionData?.choices.map(({ choice_text, choice_id }) => (
