@@ -1,20 +1,50 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { getResult, takeRetest } from "../service/api";
+import { useNavigate } from "react-router-dom";
+import ResultGauge from "./ResultGauge";
+import "./result.css";
 
 const Result = () => {
-  
+  const [result, setResult] = useState(null);
+  const navigate = useNavigate();
+  const resultPercent = Math.floor(
+    (result?.correct_answers / result?.total_questions) * 100
+  );
+
+  const fetchResults = async () => {
+    const res = await getResult();
+    setResult(res);
+  };
+
+  const handleReset = async () => {
+    await takeRetest();
+    navigate("/");
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
   return (
-    <div className="result">
-      <div>
-        <p className="your-result">Your result</p>
+    <div className="card">
+      <div className="result-header">
+        <h2>Your result</h2>
       </div>
-      <div className="score-guage">guage</div>
-      <div className="">
-        <p style={{ color: "green" }}>Correct Answers</p>
-        <p style={{ color: "red" }}>incorrect_answers</p>
+      <ResultGauge percentage={resultPercent} />
+      <div className="result-details">
+        <div className="correct">
+          <span className="dot correct-dot"></span>
+          <span className="numbers">{result?.correct_answers} </span>
+          <span className="text">Correct</span>
+        </div>
+        <div className="incorrect">
+          <span className="dot incorrect-dot"></span>
+          <span className="numbers">{result?.incorrect_answers} </span>
+          <span className="text">Incorrect</span>
+        </div>
       </div>
-      <div className="reset">
-        <button className="reset-button">
+      <div className="button-container">
+        <button className="start-again-btn" onClick={handleReset}>
           Start Again
         </button>
       </div>

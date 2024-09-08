@@ -1,19 +1,15 @@
-import React, { useState } from "react";
-import Question from "./question";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./home.css";
 
 const Home = () => {
-  const [isStarted, setIsStarted] = useState(false);
+  const navigate = useNavigate()
 
   const startQuiz = () => {
-    setIsStarted(true);
+    navigate("/question")
   };
 
   return (
-    <div>
-      {isStarted ? (
-        <Question />
-      ) : (
         <div className="home">
           <div className="logo">
             <img
@@ -31,8 +27,6 @@ const Home = () => {
             </button>
           </div>
         </div>
-      )}
-    </div>
   );
 };
 

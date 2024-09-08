@@ -10,7 +10,6 @@ export async function getQuestion(id) {
 }
 
 export async function postAnswer(currentQuestionId, answers) {
-  console.log(currentQuestionId, answers);
   try {
     const data = await fetch(
       `http://localhost:8000/api/question/${currentQuestionId}/answer`,
@@ -29,4 +28,24 @@ export async function postAnswer(currentQuestionId, answers) {
   }
 }
 
+export async function getResult(userId) {
+  const data = await fetch("http://localhost:8000/api/score", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  const res = await data.json();
+  return res;
+}
 
+export async function takeRetest() {
+  const data = await fetch("http://localhost:8000/api/retest", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  const res = await data.json();
+  return res;
+}

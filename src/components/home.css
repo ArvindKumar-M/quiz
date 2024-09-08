@@ -2,7 +2,6 @@
   width: 100%;
   max-width: 400px;
   height: 650px;
-  margin-top: 40px;
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -68,13 +67,12 @@
   border-radius: 30px;
   width: 340px;
   height: 60px;
-  background: #ff3b3f;
+  background: #FF3B3F;
   color: #fff;
   font-family: Nunito, sans-serif;
   font-size: 24px;
   font-weight: 900;
   line-height: 67px;
-  text-align: left;
   cursor: pointer;
   transition: all 0.1s linear;
 }

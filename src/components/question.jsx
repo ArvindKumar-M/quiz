@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getQuestion, postAnswer } from "../service/api";
-import Result from "./result";
-import "./question.css"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import QuestionGauge from "./questionGauge";
+import CustomAlert from "./popup/alert";
+import "./question.css";
 
 const Question = () => {
   const [questionData, setQuestionData] = useState(null);
@@ -9,6 +13,9 @@ const Question = () => {
   const [currentQuestionId, setCurrentQuestionId] = useState(1);
   const [timer, setTimer] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchQuestionById = async (id) => {
     try {
@@ -30,7 +37,7 @@ const Question = () => {
 
   const nextQuestion = () => {
     if (selectedOptions.length === 0) {
-      alert("You must select atleast one option");
+      setOpenAlert(true);
       return;
     }
     submitAnswer()
@@ -51,24 +58,38 @@ const Question = () => {
     await postAnswer(currentQuestionId, {
       selected_choice_ids: selectedOptions,
       time_taken: 1,
-      user_id: 1,
     });
+  };
+
+  const closeAlert = () => {
+    setOpenAlert(false);
   };
 
   useEffect(() => {
     fetchQuestionById(currentQuestionId);
   }, [currentQuestionId]);
 
-  
+  useEffect(() => {
+    if (quizCompleted && currentQuestionId === 10) {
+      navigate("/result");
+    }
+  }, [quizCompleted, currentQuestionId, navigate]);
+
   return (
     <div className="quiz-container">
-      <div className="progress-container">
-        <div className="progress-circle">
-          <span className="progress-bold">{currentQuestionId}</span>/
-          <span className="progress-light">10</span>
-        </div>
+      {openAlert && (
+        <CustomAlert
+          open={openAlert}
+          onClose={closeAlert}
+        />
+      )}
+      <div class="question-gauge-container">
+        <QuestionGauge questionNumber={currentQuestionId} totalQuestions={10} />
       </div>
-      <h2 className="quiz-question">{questionData?.question}</h2>
+      <p className="quiz-question">{questionData?.question}</p>
+      {questionData?.is_image===1&&<div className="q-image">
+         <img src={questionData?.image_path} alt="" srcset="" />
+      </div>}
       <div className="options-container">
         {questionData?.choices.map(({ choice_text, choice_id }) => (
           <label key={choice_id} className="option-label">
@@ -86,9 +107,12 @@ const Question = () => {
           </label>
         ))}
       </div>
-      <button className="next-button" onClick={nextQuestion}>
-        Next
-      </button>
+      <div className="next-button">
+        <button className="next" onClick={nextQuestion}>
+          <span> Next</span>
+          <FontAwesomeIcon className="arrow" icon={faArrowRight} />
+        </button>
+      </div>
     </div>
   );
 };

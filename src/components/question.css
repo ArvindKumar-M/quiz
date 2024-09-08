@@ -1,76 +1,46 @@
-/* Quiz.css */
-.quiz-container {
-  background-color: #fff;
-  border-radius: 15px;
-  width: 350px;
-  margin: 50px auto;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-family: "Arial", sans-serif;
-  position: relative;
-}
 
-.progress-container {
+.quiz-container {
+  width: 100%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.progress-circle {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #eee;
-  border: 8px solid #4caf50; /* Green progress circle */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Arial", sans-serif;
-}
-
-.progress-bold {
-  font-size: 24px;
-  font-weight: bold;
-  color: #4caf50;
-}
-
-.progress-light {
-  font-size: 24px;
-  font-weight: normal;
-  color: #888;
-}
-
-.question-counter {
-  font-size: 16px;
-  color: #888;
-  margin-top: 10px;
+  gap: 15px;
+  justify-content: space-evenly;
+  border-radius: 15px;
+  margin: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Nunito, sans-serif;
+  padding: 1rem;
 }
 
 .quiz-question {
   font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  line-height: 24px;
+  font-weight: 800;
+  color: #333;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .options-container {
+  width: 100%; 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 10px; 
 }
 
 .option-label {
   display: flex;
   align-items: center;
-  margin: 10px 0;
   background-color: #f9f9f9;
   padding: 10px;
   border-radius: 8px;
-  width: 100%;
+  width: 100%; 
   cursor: pointer;
   transition: background-color 0.3s;
+  box-sizing: border-box; 
 }
 
 .option-label:hover {
@@ -82,44 +52,68 @@
 }
 
 .next-button {
-  margin-top: 20px;
-  background-color: #ff4d4d; /* Red button */
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(255, 77, 77, 0.3);
-  transition: background-color 0.3s, transform 0.2s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* .next-button:hover {
-    background-color: #e43d3d;
-    transform: translateY(-2px);
+.next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  width: 380px;
+  height: 60px;
+  background: #FF3B3F;
+  color: #fff;
+  font-family: Nunito, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  position: relative;
+}
+
+.next span {
+  position: absolute;  
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.arrow {
+  margin-left: auto;    
+  font-size: 24px;     
+}
+  .next:active {
+    transform: scale(0.95);
   }
-   */
-/* Confetti Background */
+  
+  .arrow{
+    margin-left: auto;
+  }
+
 .quiz-container::before {
   content: "";
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
+  position: relative;
+  top: -15px;
+  padding: 1rem;
+  width: 400px;
   height: 80px;
   background: linear-gradient(
     135deg,
-    #f5a623,
-    #f8e71c,
-    #50e3c2,
-    #b8e986,
-    #4a90e2
+    #0033cc, 
+    #3399ff, 
+    #66ccff, 
+    #99ccff, 
+    #cce0ff 
   );
+
   border-radius: 15px 15px 0 0;
 }
 
-/* Style for the custom radio (which is visually a radio button but behaves like a checkbox) */
-/* Container for each choice option */
 .option-label {
   display: flex;
   align-items: center;
@@ -127,23 +121,20 @@
   margin-bottom: 10px;
 }
 
-/* Hide the original checkbox */
 .option-label input[type="checkbox"] {
   display: none;
 }
 
-/* Style for the custom radio button */
 .custom-radio {
   width: 20px;
   height: 20px;
   border: 2px solid #ccc;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 15 px;
+  margin-right: 15px;
   transition: background-color 0.2s ease;
 }
 
-/* Style for selected state */
 .custom-radio.selected {
   background-color: #4caf50;
   border-color: #4caf50;
@@ -162,12 +153,11 @@
   transform: translate(-50%, -50%);
 }
 
-/* Style for the choice text */
+
 .option-label span {
   font-size: 16px;
 }
 
-/* Align the label text properly */
 .option-label input[type="checkbox"] + .custom-radio {
   vertical-align: middle;
 }
