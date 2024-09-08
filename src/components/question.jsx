@@ -53,11 +53,12 @@ const Question = () => {
       .catch((error) => {
         console.error(error);
       });
+      setTimer(0)
   };
   const submitAnswer = async () => {
     await postAnswer(currentQuestionId, {
       selected_choice_ids: selectedOptions,
-      time_taken: 1,
+      time_taken: timer,
     });
   };
 
@@ -65,8 +66,24 @@ const Question = () => {
     setOpenAlert(false);
   };
 
+  const formatTime = (time) => {
+    if (time < 60) {
+      return `${time} seconds`;
+    } else {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds} minutes`;
+    }
+  };
   useEffect(() => {
+    let interval = null;
     fetchQuestionById(currentQuestionId);
+    interval = setInterval(() => {
+      setTimer((prevTime) => prevTime + 1);
+    }, 1000);
+
+    // Cleanup the timer when component unmounts or question changes
+    return () => clearInterval(interval);
   }, [currentQuestionId]);
 
   useEffect(() => {
@@ -85,6 +102,9 @@ const Question = () => {
       )}
       <div class="question-gauge-container">
         <QuestionGauge questionNumber={currentQuestionId} totalQuestions={10} />
+      </div>
+      <div className="timer">
+        <p>Time: {formatTime(timer)}</p>
       </div>
       <p className="quiz-question">{questionData?.question}</p>
       {questionData?.is_image===1&&<div className="q-image">
